@@ -16,7 +16,7 @@ const helmet = require('helmet');
 //FIXME Create full log fs
 if (__DEV__) {
   const morgan = require('morgan');
-  app.use(morgan('dev'))
+  app.use(morgan('dev'));
 }
 
 // request pre-middleware
@@ -26,30 +26,30 @@ app.use(helmet());
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+  let err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // development error handler
 // will print stacktrace
 if (__DEV__) {
-    app.use((err, req, res, next) => {
-        res.status(err.status || 500);
-        res.json({
-            message: err.message,
-            error: err
-        });
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.json({
+      message: err.message,
+      error: err,
     });
+  });
 } else {
   // production error handler
   // no stacktraces leaked to user
   app.use((err, req, res, next) => {
-      res.status(err.status || 500);
-      res.json({
-          message: err.message,
-          error: {}
-      });
+    res.status(err.status || 500);
+    res.json({
+      message: err.message,
+      error: {},
+    });
   });
 }
 

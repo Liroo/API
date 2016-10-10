@@ -41,7 +41,6 @@ function normalizePort(val) {
     // port number
     return port;
   }
-
   return false;
 }
 
@@ -77,9 +76,9 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-    console.log('I\' listening on port: ', port);
+  // var addr = server.address();
+  // var bind = typeof addr === 'string'
+  //   ? 'pipe ' + addr
+  //   : 'port ' + addr.port;
+  console.log('I\' listening on port: ', port);
 }

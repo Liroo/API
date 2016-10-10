@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
+    "flow": "./node_modules/flow-bin/vendor/flow; test $? -eq 0 -o $? -eq 2",
+    "lint": "./node_modules/.bin/eslint src/",
+    "pre-commit-lint": "LIST=`git diff --name-only --cached | grep .*\\.js$`;if [ \"$LIST\" ]; then ./node_modules/.bin/eslint $LIST; fi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,5 +28,15 @@
     "helmet": "^2.3.0",
     "mongoose": "^4.6.3",
     "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.7.1",
+    "eslint-config-fbjs": "^1.1.1",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-flowtype": "^2.20.0",
+    "eslint-plugin-react": "^6.4.0",
+    "fbjs": "^0.8.5",
+    "flow-bin": "^0.33.0"
   }
 }
