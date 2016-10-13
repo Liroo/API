@@ -1,0 +1,12 @@
+nodejs:
+  build: ./
+  links:
+    - database
+  ports:
+    - "3000:3000"
+database:
+  image: mongo
+  volumes:
+    - db:/data/db
+  ports:
+    - 27017
