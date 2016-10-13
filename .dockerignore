@@ -1,0 +1,6 @@
+# Ignore the dev config files while image server
+README.md
+.git
+.gitignore
+.flowconfig
+.eslintrc.js
