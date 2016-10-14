@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const mongoose = require('mongoose');
 
 /*
       |********|
@@ -10,6 +11,7 @@ const helmet = require('helmet');
 
   - gere cache and cookies
   - install and use apiDocs
+  - log fs, debug module
 
 */
 
@@ -24,6 +26,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
 
+mongoose.connect(__DB_URL__);
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   let err = new Error('Not Found');
@@ -31,9 +35,9 @@ app.use((req, res, next) => {
   next(err);
 });
 
-// development error handler
-// will print stacktrace
+// error handler
 if (__DEV__) {
+  //stacktrace for dev
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({
@@ -42,7 +46,6 @@ if (__DEV__) {
     });
   });
 } else {
-  // production error handler
   // no stacktraces leaked to user
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
