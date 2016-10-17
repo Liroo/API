@@ -5,80 +5,107 @@
  */
 require('../src/config');
 
-var app = require('app');
-var http = require('http');
+const app = require('app');
+const http = require('http');
 
-/**
- * Get port from global
- */
-var port = normalizePort(__PORT__);
+const cluster = require('cluster');
 
-/**
- * Create HTTP server.
- */
-var server = http.createServer(app);
+if (cluster.isMaster) {
+  /*
+   * CPU Cluster
+   */
+  const cpuCount = require('os').cpus();
+   /**
+    * Create workers
+    */
+  cpuCount.forEach((cpu) => {
+    cluster.fork();
+  });
+  cluster.on('exit', (worker, code, signal) => {
+    if (signal) {
+      console.log(`worker ${worker.process.id} was killed by signal: ${signal}`);
+    } else if (code !== 0) {
+      console.log(`worker ${worker.process.id} exited with error code: ${code}`);
+    } else {
+      console.log(`worker ${worker.process.id} success!`);
+    }
+    // respawn worker
+    cluster.fork();
+  });
+} else {
+  /**
+   * Get port from global
+   */
+  const port = normalizePort(__PORT__);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+  /**
+   * Create HTTP server.
+   */
+  const server = http.createServer(app);
 
-/**
- * Normalize a port into a number, string, or false.
- */
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+  /**
+   * Normalize a port into a number, string, or false.
+   */
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
+  function normalizePort(val) {
+    const port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+      // named pipe
+      return val;
+    }
+
+    if (port >= 0) {
+      // port number
+      return port;
+    }
+    return false;
   }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-  return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
+  /**
+   * Event listener for HTTP server "error" event.
+   */
+  function onError(error) {
+    if (error.syscall !== 'listen') {
       throw error;
+    }
+
+    const bind = typeof port === 'string'
+      ? 'Pipe ' + port
+      : 'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+        console.error(bind + ' requires elevated privileges');
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        console.error(bind + ' is already in use');
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
   }
-}
 
-/**
- * Event listener for HTTP server "listening" event.
- */
+  /**
+   * Event listener for HTTP server "listening" event.
+   */
 
-function onListening() {
-  // var addr = server.address();
-  // var bind = typeof addr === 'string'
-  //   ? 'pipe ' + addr
-  //   : 'port ' + addr.port;
-  console.log('I\' listening on port: ', port);
+  function onListening() {
+    // const addr = server.address();
+    // const bind = typeof addr === 'string'
+    //   ? 'pipe ' + addr
+    //   : 'port ' + addr.port;
+    console.log('I\' listening on port: ', port);
+  }
+
 }

@@ -26,7 +26,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
 
-mongoose.connect(__DB_URL__);
+/*
+// The mongoose connection dit not work well with cluster, I have to ask it to stackoverflow !!
+mongoose.createConnection(__DB_URL__, {
+  server: {
+    socketOptions: {
+      keepAlive: 1,
+      connectTimeoutMS: 3000,
+    },
+    auto_recconect: false,
+    poolSize: 1,
+  },
+}, (err) => {
+  console.log(err);
+});
+*/
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
