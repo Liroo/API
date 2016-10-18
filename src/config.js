@@ -28,4 +28,4 @@ try {
   Global defined
 */
 global.__VERSION__ = '0.0.1';
-global.__DB_URL__ = 'mongodb://localhost:27017/streetspot';
+global.__DB_URL__ = 'mongodb://localhost:27017/api';

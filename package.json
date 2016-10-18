@@ -1,7 +1,7 @@
 {
-  "name": "streetspot-api",
+  "name": "api",
   "version": "0.0.1",
-  "description": "streetspot api",
+  "description": "api",
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Liroo/StreetSpot.git"
+    "url": "git+https://github.com/Liroo/API.git"
   },
   "author": "Liroo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Liroo/StreetSpot/issues"
+    "url": "https://github.com/Liroo/API/issues"
   },
-  "homepage": "https://github.com/Liroo/StreetSpot#readme",
+  "homepage": "https://github.com/Liroo/API#readme",
   "dependencies": {
     "app-module-path": "^2.1.0",
     "body-parser": "^1.15.2",
