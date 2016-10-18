@@ -1,1 +1,4 @@
-module.exports = () => console.log('test');
+/*
+ Used to connect worker to database
+ */
+require('mongo/mongoConnection');

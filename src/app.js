@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const mongoose = require('mongoose');
-
 /*
       |********|
       |* TODO *|
@@ -11,9 +9,14 @@ const mongoose = require('mongoose');
 
   - gere cache and cookies
   - install and use apiDocs
-  - log fs, debug module
+  - log fs, debug module (Should use a log fs on each workers ?)
 
 */
+
+/*
+  Database configuration
+*/
+require('mongo/mongoIndex');
 
 //FIXME Create full log fs
 if (__DEV__) {
@@ -25,22 +28,6 @@ if (__DEV__) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
-
-/*
-// The mongoose connection dit not work well with cluster, I have to ask it to stackoverflow !!
-mongoose.createConnection(__DB_URL__, {
-  server: {
-    socketOptions: {
-      keepAlive: 1,
-      connectTimeoutMS: 3000,
-    },
-    auto_recconect: false,
-    poolSize: 1,
-  },
-}, (err) => {
-  console.log(err);
-});
-*/
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
