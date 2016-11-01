@@ -1,0 +1,1 @@
+define({  "name": "Challenge Me",  "version": "0.0.1",  "description": "Documentation API of Challenge Me app",  "title": "API - Challenge Me",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2016-11-01T19:27:27.573Z",    "url": "http://apidocjs.com",    "version": "0.16.1"  }});

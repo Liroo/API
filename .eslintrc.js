@@ -5,5 +5,6 @@ module.exports = {
       '__DEV__': true,
       '__DB_URL__': true,
       '__VERSION__': true,
+      '__APP_NAME__': true,
     },
 };

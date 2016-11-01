@@ -1,15 +1,47 @@
+//
+// Copyright (c) 2016 by Challenge Me - Pierre Monge <liroo.pierre@gmail.com>. All Rights Reserved.
+//
+
+/**
+ * @api {get} /api/
+ * @apiVersion 0.0.1
+ * @apiName Challenge Me
+ * @apiGroup Api
+ * @apiDescription Used to check if API is on. Like `ping`. Only possibility to fail of this request is time-out !
+ *
+ * @apiSuccess {String} app_name Name of the API application
+ * @apiSuccess {String} app_version  Version of the API application
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "app_name": "Challenge Me",
+ *       "app_version": "1.0.0"
+ *     }
+ *
+ */
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const compression = require('compression');
+
 /*
       |********|
       |* TODO *|
       |********|
 
   - gere cache and cookies
+  - load balancing
   - install and use apiDocs
-  - log fs, debug module (Should use a log fs on each workers ?)
+  - log fs, debug module (Should use a log fs on each workers ?) // api
+  - script to run server in production mode NODE_ENV (express depend on it) // infra ?
+  - use cluster service ? on npm => node-pm / cluster-service // infra-api
+  - use a reverse proxy // infra
 
 */
 
@@ -28,11 +60,33 @@ if (__DEV__) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
+// should increase perf but we should put this logic in nginx
+app.use(compression());
+// Session is that really useful ?
+app.use(session({
+  saveUninitialized: true,
+  secret: 'coolest_api',
+  resave: false,
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+  }),
+}));
+
+/*
+  API ping
+*/
+app.get('/api/', (req, res) => {
+  res.status(200).json({
+    app_name: __APP_NAME__,
+    app_version: __VERSION__,
+  });
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  let err = new Error('Not Found');
+  let err = new Error();
   err.status = 404;
+  err.data = 'Not Found';
   next(err);
 });
 
@@ -42,7 +96,6 @@ if (__DEV__) {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({
-      message: err.message,
       error: err,
     });
   });
@@ -51,7 +104,6 @@ if (__DEV__) {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({
-      message: err.message,
       error: {},
     });
   });

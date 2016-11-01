@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 by Challenge Me - Pierre Monge <liroo.pierre@gmail.com>. All Rights Reserved.
+//
+
 
 /*
   Add alias to require (TODO test performance of this module)
@@ -29,3 +33,4 @@ try {
 */
 global.__VERSION__ = '0.0.1';
 global.__DB_URL__ = 'mongodb://localhost:27017/api';
+global.__APP_NAME__ = 'Challenge Me';

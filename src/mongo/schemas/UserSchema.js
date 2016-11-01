@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2016 by Challenge Me - Pierre Monge <liroo.pierre@gmail.com>. All Rights Reserved.
+//
+
 const mongoose = require('mongoose');
 const validator = require('validator');
 
