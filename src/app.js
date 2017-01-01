@@ -21,8 +21,7 @@
  *
  */
 
-const express = require('express');
-const app = express();
+const app = require('express')();
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
@@ -42,6 +41,15 @@ const compression = require('compression');
   - script to run server in production mode NODE_ENV (express depend on it) // infra ?
   - use cluster service ? on npm => node-pm / cluster-service // infra-api
   - use a reverse proxy // infra
+
+  Things to think for production/release mode: {
+    Set NODE_ENV to “production”
+    Ensure your app automatically restarts
+    Run your app in a cluster
+    Cache request results
+    Use a load balancer
+    Use a reverse proxy
+  } => http://expressjs.com/en/advanced/best-practice-performance.html
 
 */
 
@@ -64,13 +72,18 @@ app.use(helmet());
 app.use(compression());
 // Session is that really useful ?
 app.use(session({
+  key: '_session',
   saveUninitialized: true,
   secret: 'coolest_api',
   resave: false,
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
   }),
+  maxAge: 7200000,
 }));
+
+// Create and use API Router
+app.use(require('src/router'));
 
 /*
   API ping
