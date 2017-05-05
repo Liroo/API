@@ -7,8 +7,8 @@
     "start": "node ./bin/www",
     "flow": "./node_modules/flow-bin/vendor/flow; test $? -eq 0 -o $? -eq 2",
     "lint": "./node_modules/.bin/eslint src/",
-    "pre-commit-lint": "LIST=`git diff --name-only --cached | grep .*\\.js$`;if [ \"$LIST\" ]; then ./node_modules/.bin/eslint $LIST; fi",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "LIST=`git diff --name-only --cached | grep .*\\.js$`;if [ \"$LIST\" ]; then ./node_modules/.bin/eslint $LIST; fi; yarn test",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "generate-docs": "apidoc -i ./src/ -o ./docs/ -f \".*\\.js$\""
   },
   "repository": {
@@ -44,11 +44,7 @@
     "eslint-plugin-react": "^6.4.0",
     "fbjs": "^0.8.5",
     "flow-bin": "^0.33.0",
-    "ghooks": "^1.3.2"
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "npm run pre-commit-lint"
-    }
+    "forever": "0.15.3",
+    "husky": "0.13.3"
   }
 }

@@ -7,7 +7,7 @@
 */
 
 // Setup config
-require('./src/config');
+require('./lib/config');
 
 // run server
 require('app');
