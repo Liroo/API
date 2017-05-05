@@ -8,7 +8,7 @@
     "flow": "./node_modules/flow-bin/vendor/flow; test $? -eq 0 -o $? -eq 2",
     "lint": "./node_modules/.bin/eslint src/",
     "precommit": "LIST=`git diff --name-only --cached | grep .*\\.js$`;if [ \"$LIST\" ]; then ./node_modules/.bin/eslint $LIST; fi; yarn test",
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "./node_modules/mocha/bin/mocha",
     "generate-docs": "apidoc -i ./src/ -o ./docs/ -f \".*\\.js$\""
   },
   "repository": {
@@ -45,6 +45,8 @@
     "fbjs": "^0.8.5",
     "flow-bin": "^0.33.0",
     "forever": "0.15.3",
-    "husky": "0.13.3"
+    "husky": "0.13.3",
+    "mocha": "3.3.0",
+    "request": "2.81.0"
   }
 }
